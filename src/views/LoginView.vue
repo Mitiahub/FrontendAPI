@@ -49,7 +49,7 @@ export default {
         localStorage.setItem('token', response.data.idToken)
 
         // Rediriger vers la liste des commandes après connexion
-        this.$router.push('/commandes')
+        this.$router.push('/acceuilView')
       } catch (error) {
         this.errorMessage = 'Email ou mot de passe incorrect.'
       }

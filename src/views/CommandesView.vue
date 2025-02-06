@@ -9,35 +9,40 @@
     </div>
 
     <!-- Tableau des commandes -->
-    <table v-else class="command-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Statut</th>
-          <th>Montant (€)</th>
-          <th>Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="commande in commandes" :key="commande.id">
-          <td>{{ commande.id }}</td>
-          <td>
-            <span class="status" :class="getStatusClass(commande.status)">
-              {{ commande.status }}
-            </span>
-          </td>
-          <td>{{ commande.montant_total }}€</td>
-          <td>{{ commande.created_at }}</td>
-          <td>
-            <button class="btn btn-info" @click="voirDetails(commande)">👁 Voir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-else>
+      <table v-if="commandes.length > 0" class="command-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Statut</th>
+            <th>Montant (€)</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="commande in commandes" :key="commande.id">
+            <td>{{ commande.id }}</td>
+            <td>
+              <span class="status" :class="getStatusClass(commande.status)">
+                {{ commande.status }}
+              </span>
+            </td>
+            <td>{{ commande.montant_total }}€</td>
+            <td>{{ commande.created_at }}</td>
+            <td>
+              <button class="btn btn-info" @click="voirDetails(commande)">👁 Voir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <!-- Alerte si aucune commande -->
-    <p v-if="!loading && commandes.length === 0" class="no-command">Aucune commande disponible.</p>
+      <!-- Message si aucune commande trouvée -->
+      <p v-else class="no-command">Aucune commande trouvée pour cet utilisateur.</p>
+    </div>
+
+    <!-- Message d'erreur -->
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -49,16 +54,41 @@ export default {
     return {
       commandes: [],
       loading: true,
+      errorMessage: '',
     }
   },
   async mounted() {
     try {
-      const response = await apiClient.get('/commande/')
+      console.log("🌍 Récupération des commandes pour l'utilisateur...")
+
+      const firebaseUid = localStorage.getItem('uid') // 🔥 Récupérer l'UID Firebase
+      console.log('🆔 UID Firebase trouvé :', firebaseUid)
+
+      if (!firebaseUid) {
+        console.error('❌ Aucun UID trouvé !')
+        this.errorMessage = 'Utilisateur non authentifié.'
+        this.loading = false
+        return
+      }
+
+      // 🔥 Récupération des commandes de l'utilisateur avec son UID
+      const response = await apiClient.get(`/commande/utilisateur/${firebaseUid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // ✅ Vérifier le token Firebase
+          'Content-Type': 'application/json',
+        },
+      })
+
+      console.log('✅ Commandes récupérées :', response.data)
       this.commandes = response.data
     } catch (error) {
-      console.error('Erreur lors de la récupération des commandes :', error)
+      console.error(
+        '❌ Erreur API Commandes :',
+        error.response ? error.response.data : error.message,
+      )
+      this.errorMessage = 'Erreur lors de la récupération des commandes.'
     } finally {
-      this.loading = false
+      this.loading = false // ✅ Arrêter le chargement une fois que l'API a répondu
     }
   },
   methods: {

@@ -5,6 +5,7 @@ import LoginView from '@/views/LoginView.vue'
 import RecettesView from '@/views/RecettesView.vue'
 import IngredientsView from '@/views/IngredientsView.vue'
 import PasserCommandeView from '@/views/PasserCommandeView.vue' // ✅ Importation
+import AboutView from '@/views/AboutView.vue' // ✅ Ajout de l'importation de AboutView.vue
 
 const routes = [
   { path: '/login', component: LoginView },
@@ -36,6 +37,11 @@ const routes = [
     path: '/passer-commande',
     component: PasserCommandeView,
     meta: { requiresAuth: true }, // ✅ Protégé par authentification
+  },
+  {
+    path: '/about',
+    component: AboutView,
+    meta: { requiresAuth: false }, // ℹ️ Page publique
   },
 ]
 

@@ -45,12 +45,25 @@ export default {
           password: this.password,
         })
 
-        // Stocker le token JWT
+        // 🔥 Stocke le token et le Refresh Token
         localStorage.setItem('token', response.data.idToken)
+        localStorage.setItem('refreshToken', response.data.refreshToken)
 
-        // Rediriger vers la liste des commandes après connexion
-        this.$router.push('/acceuilView')
+        // 🔥 🔍 Décoder le token Firebase pour extraire l'UID utilisateur
+        const tokenParts = response.data.idToken.split('.')
+        const tokenPayload = JSON.parse(atob(tokenParts[1])) // 🛠 Décode la partie payload du JWT
+
+        const userUid = tokenPayload.user_id || tokenPayload.sub // 🔑 UID Firebase
+        console.log('🆔 UID extrait du token:', userUid)
+
+        if (userUid) {
+          localStorage.setItem('uid', userUid) // ✅ Stocke l'UID Firebase
+        }
+
+        // ✅ Rediriger après connexion
+        this.$router.push('/accueil')
       } catch (error) {
+        console.error('❌ Erreur de connexion :', error)
         this.errorMessage = 'Email ou mot de passe incorrect.'
       }
     },

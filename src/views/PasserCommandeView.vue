@@ -69,10 +69,11 @@ export default {
   async mounted() {
     try {
       console.log('🌍 Chargement des recettes depuis API...')
-      const response = await apiClient.get('http://localhost:8000/api/recettes/')
+      const response = await apiClient.get('http://localhost:8000/api/recettes/') // ✅ Correction de l'URL API
+      console.log('✅ Réponse API Recettes:', response.data)
       this.recettes = response.data
 
-      // Initialisation des quantités pour chaque recette
+      // ✅ Initialisation des quantités pour chaque recette
       this.recettes.forEach((recette) => {
         this.quantites[recette.id] = 1
       })
@@ -93,36 +94,51 @@ export default {
         return
       }
 
-      try {
-        // ✅ Récupération de l'ID utilisateur depuis le localStorage
-        const userId = localStorage.getItem('user_id')
-        if (!userId) {
-          this.errorMessage = 'Utilisateur non authentifié.'
-          return
-        }
+      // ✅ Récupérer uniquement l'ID Token Firebase
+      const idToken = localStorage.getItem('token')
 
-        // ✅ Construction des données pour l'API
+      console.log('🔑 Token Firebase récupéré:', idToken)
+
+      if (!idToken) {
+        this.errorMessage = 'Utilisateur non authentifié.'
+        return
+      }
+
+      try {
+        // ✅ Préparer les données de commande
         const recettesACommander = this.recetteSelectionnees.map((recetteId) => ({
           recette_id: recetteId,
           quantite: this.quantites[recetteId] || 1,
         }))
 
-        const montantTotal = recettesACommander.length * 10 // 💰 Exemple de prix fixe par recette
-
-        const response = await apiClient.post('/commande/new', {
-          user_id: userId,
-          montant_total: montantTotal,
+        console.log('📦 Envoi des données de commande:', {
           recettes: recettesACommander,
         })
 
+        const response = await apiClient.post(
+          'http://localhost:8000/api/commande/passer',
+          {
+            recettes: recettesACommander, // ✅ On envoie seulement les recettes
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${idToken}`, // ✅ Envoi du token Firebase
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+
+        console.log('✅ Réponse API Commande:', response.data)
         this.successMessage = response.data.message
-        this.recetteSelectionnees = [] // 🔄 Réinitialiser après commande
+        this.recetteSelectionnees = [] // 🔄 Réinitialisation après commande
       } catch (error) {
-        console.error('❌ Erreur lors de la commande:', error)
+        console.error(
+          '❌ Erreur lors de la commande:',
+          error.response ? error.response.data : error.message,
+        )
         this.errorMessage = 'Erreur lors du passage de la commande.'
       }
     },
-
     // ✅ Convertit le temps de cuisson en minutes
     formatTempsCuisson(temps) {
       return Math.floor(temps / 60) + ' min'

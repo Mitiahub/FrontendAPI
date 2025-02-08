@@ -4,39 +4,45 @@ import AccueilView from '@/views/AccueilView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RecettesView from '@/views/RecettesView.vue'
 import IngredientsView from '@/views/IngredientsView.vue'
-import PasserCommandeView from '@/views/PasserCommandeView.vue' // ✅ Importation
-import AboutView from '@/views/AboutView.vue' // ✅ Ajout de l'importation de AboutView.vue
+import PasserCommandeView from '@/views/PasserCommandeView.vue'
+import AboutView from '@/views/AboutView.vue'
+import DashboardView from '@/views/DashboardView.vue' // 📊 Importation de la page Statistiques
 
 const routes = [
   { path: '/login', component: LoginView },
   {
     path: '/',
-    redirect: '/accueil', // 🚀 Redirection vers l'accueil après connexion
+    redirect: '/dashboard', // 🚀 Redirection vers le tableau de bord après connexion
+  },
+  {
+    path: '/dashboard',
+    component: DashboardView,
+    meta: { requiresAuth: true }, // 📊 Statistiques protégées
   },
   {
     path: '/accueil',
     component: AccueilView,
-    meta: { requiresAuth: true }, // 🔒 Protégé par authentification
+    meta: { requiresAuth: true },
   },
   {
     path: '/commandes',
     component: CommandesView,
-    meta: { requiresAuth: true }, // 🔒 Protégé par authentification
+    meta: { requiresAuth: true },
   },
   {
     path: '/recettes',
     component: RecettesView,
-    meta: { requiresAuth: true }, // 🔒 Protégé par authentification
+    meta: { requiresAuth: true },
   },
   {
     path: '/ingredients',
     component: IngredientsView,
-    meta: { requiresAuth: true }, // 🔒 Protégé par authentification
+    meta: { requiresAuth: true },
   },
   {
     path: '/passer-commande',
     component: PasserCommandeView,
-    meta: { requiresAuth: true }, // ✅ Protégé par authentification
+    meta: { requiresAuth: true },
   },
   {
     path: '/about',

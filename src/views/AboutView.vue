@@ -10,7 +10,7 @@
 
     <!-- ✅ Présentation du projet -->
     <section class="intro-section">
-      <h2>📌 Qui sommes-nous ?</h2>
+      <h3>📌 Qui sommes-nous ?</h3>
       <p>
         Digital Restau est une plateforme conçue pour faciliter la gestion des commandes, des
         recettes et des ingrédients pour les restaurants. Notre solution repose sur des technologies
@@ -20,30 +20,25 @@
 
     <!-- ✅ Technologies utilisées -->
     <section class="tech-section">
-      <h2>🔧 Technologies utilisées</h2>
+      <h3>🔧 Technologies utilisées</h3>
       <div class="tech-grid">
         <div class="tech-card">
-          
           <h3>Vue.js</h3>
           <p>Framework frontend dynamique pour une interface utilisateur fluide.</p>
         </div>
         <div class="tech-card">
-
           <h3>React</h3>
           <p>Gestion de certaines parties de l'application pour une meilleure modularité.</p>
         </div>
         <div class="tech-card">
-
           <h3>Symfony</h3>
           <p>API backend robuste et sécurisée.</p>
         </div>
         <div class="tech-card">
-
           <h3>Firebase</h3>
           <p>Authentification et gestion des utilisateurs.</p>
         </div>
         <div class="tech-card">
-
           <h3>Godot</h3>
           <p>Utilisé pour des animations interactives et une meilleure expérience utilisateur.</p>
         </div>
@@ -52,7 +47,7 @@
 
     <!-- ✅ Fonctionnalités -->
     <section class="features-section">
-      <h2>🚀 Fonctionnalités principales</h2>
+      <h3>🚀 Fonctionnalités principales</h3>
       <ul>
         <li>✔️ Gestion des commandes et suivi en temps réel</li>
         <li>✔️ Gestion des recettes et des ingrédients</li>
@@ -65,7 +60,7 @@
 
     <!-- ✅ Équipe -->
     <section class="team-section">
-      <h2>👨‍💻 L'équipe derrière le projet</h2>
+      <h3>👨‍💻 L'équipe derrière le projet</h3>
       <p>
         Une équipe de développeurs passionnés par l'innovation et la digitalisation des restaurants.
       </p>
@@ -74,63 +69,65 @@
     <!-- ✅ Contact -->
     <section class="contact-section">
       <h2>📞 Contactez-nous</h2>
-      <p>📧 Email: support@digitalrestau.com</p>
-      <p>📍 Adresse: Paris, France</p>
+      <p>📧 Email: <a href="mailto:support@digitalrestau.com">support@digitalrestau.com</a></p>
+      <p>📍 Adresse: Antananarivo, Madagascar</p>
     </section>
   </div>
 </template>
 
---- ### ✅ **Ajout du style professionnel** Ajoute ce style directement dans **`AboutView.vue`** ou
-dans ton fichier CSS global. ```vue
+--- ### **🎨 Amélioration du style :** Ajoute ce **CSS** directement dans **`AboutView.vue`** ou
+dans ton fichier **CSS global**. ```vue
 <style scoped>
-/* ✅ Style général */
+/* 🎨 Style général */
 .about-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 30px;
   background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
   font-family: 'Poppins', sans-serif;
 }
 
 /* ✅ En-tête */
 .header {
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  background: linear-gradient(135deg, #8b4513, #a0522d);
   color: white;
-  padding: 40px;
+  padding: 50px;
   border-radius: 10px;
+  font-weight: bold;
 }
 
 .header h1 {
-  font-size: 32px;
+  font-size: 36px;
   margin-bottom: 10px;
 }
 
 .header .highlight {
   font-weight: bold;
+  color: #ffcc00;
 }
 
 /* ✅ Sections */
 section {
   margin-top: 30px;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
-  background: #f8f9fa;
+  background: #f9f9f9;
   text-align: center;
 }
 
-h2 {
+h3 {
   color: #333;
-  font-size: 24px;
+  font-size: 26px;
   margin-bottom: 15px;
 }
 
 p {
   font-size: 16px;
-  color: #555;
-  line-height: 1.6;
+  color: #120909;
+  line-height: 1.7;
 }
 
 /* ✅ Grille des technologies */
@@ -144,22 +141,25 @@ p {
 
 .tech-card {
   background: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  width: 180px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 200px;
   text-align: center;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.tech-card img {
-  width: 50px;
-  height: 50px;
+.tech-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .tech-card h3 {
   margin-top: 10px;
-  font-size: 18px;
-  color: #007bff;
+  font-size: 20px;
+  color: #a0522d;
 }
 
 .tech-card p {
@@ -174,7 +174,7 @@ ul {
 }
 
 ul li {
-  padding: 8px 0;
+  padding: 10px 0;
   font-size: 16px;
   color: #333;
 }
@@ -182,15 +182,40 @@ ul li {
 ul li::before {
   content: '✔️ ';
   color: green;
+  font-weight: bold;
 }
 
 /* ✅ Contact */
 .contact-section {
-  background: #007bff;
+  background: linear-gradient(135deg, #a0522d, #8b4513);
   color: white;
+  padding: 30px;
+  border-radius: 8px;
 }
 
-.contact-section p {
-  font-size: 18px;
+.contact-section a {
+  color: #ffd700;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.contact-section a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ Responsivité */
+@media (max-width: 768px) {
+  .about-container {
+    width: 95%;
+  }
+
+  .tech-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tech-card {
+    width: 80%;
+  }
 }
 </style>

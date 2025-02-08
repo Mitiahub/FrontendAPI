@@ -4,62 +4,63 @@ import { useRouter } from 'vue-router'
 
 // ✅ Initialisation du router pour redirection après déconnexion
 const router = useRouter()
-
-// ✅ État pour gérer l'affichage du menu dropdown
 const menuOpen = ref(false)
 
-// 🔹 Fonction pour ouvrir/fermer le menu
+// 🔹 Fonction pour ouvrir/fermer le menu sur mobile
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
-}
-
-// 🔹 Fonction pour fermer le menu lorsqu'on clique sur un lien
-const closeMenu = () => {
-  menuOpen.value = false
 }
 
 // 🔹 Fonction de déconnexion
 const logout = () => {
   localStorage.removeItem('token') // Supprime le token JWT
   localStorage.removeItem('role') // Supprime le rôle utilisateur
-  closeMenu() // Ferme le menu après déconnexion
   router.push('/login') // Redirige vers la page de connexion
 }
 </script>
 
 <template>
   <div class="app-container">
-    <!-- Barre de navigation -->
+    <!-- 🍽️ Barre de navigation -->
     <header class="navbar">
-      <div class="logo">🚀 Mon Application Vue</div>
+      <div class="logo">🍷 Digital Restau</div>
 
-      <!-- Menu hamburger pour mobile -->
-      <button class="menu-btn" @click="toggleMenu">☰</button>
+      <!-- Menu Desktop -->
+      <nav class="nav-links">
+        <router-link to="/">🏠 Accueil</router-link>
+        <router-link to="/commandes">📜 Commandes</router-link>
+        <router-link to="/recettes">🍽 Recettes</router-link>
+        <router-link to="/ingredients">🥦 Ingrédients</router-link>
+        <router-link to="/passer-commande">🛒 Passer commande</router-link>
+        <router-link to="/about">ℹ️ À propos</router-link>
+        <button class="logout-btn" @click="logout">🚪 Déconnexion</button>
+      </nav>
 
-      <!-- Menu dropdown -->
+      <!-- Menu Mobile -->
+      <button class="menu-btn" @click="toggleMenu">🍔</button>
       <div v-if="menuOpen" class="dropdown-menu">
         <ul>
-          <li><router-link to="/" @click="closeMenu">🏠 Accueil</router-link></li>
-          <li><router-link to="/commandes" @click="closeMenu">📜 Commandes</router-link></li>
-          <li><router-link to="/recettes" @click="closeMenu">🍽 Recettes</router-link></li>
-          <li><router-link to="/ingredients" @click="closeMenu">🥦 Ingrédients</router-link></li>
+          <li><router-link to="/" @click="toggleMenu">🏠 Accueil</router-link></li>
+          <li><router-link to="/commandes" @click="toggleMenu">📜 Commandes</router-link></li>
+          <li><router-link to="/recettes" @click="toggleMenu">🍽 Recettes</router-link></li>
+          <li><router-link to="/ingredients" @click="toggleMenu">🥦 Ingrédients</router-link></li>
           <li>
-            <router-link to="/passer-commande" @click="closeMenu">🛒 Passer commande</router-link>
+            <router-link to="/passer-commande" @click="toggleMenu">🛒 Passer commande</router-link>
           </li>
-          <li><router-link to="/about" @click="closeMenu">ℹ️ À propos</router-link></li>
+          <li><router-link to="/about" @click="toggleMenu">ℹ️ À propos</router-link></li>
           <li><button class="logout-btn" @click="logout">🚪 Déconnexion</button></li>
         </ul>
       </div>
     </header>
 
-    <!-- Contenu principal -->
+    <!-- 📌 Contenu principal -->
     <main class="main-content">
       <RouterView />
     </main>
 
-    <!-- Pied de page -->
+    <!-- 🍷 Pied de page -->
     <footer class="footer">
-      <p>© 2025 Mon Application - Tous droits réservés</p>
+      <p>© 2025 Digital Restau - Tous droits réservés</p>
     </footer>
   </div>
 </template>
@@ -69,46 +70,68 @@ const logout = () => {
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  width: 100vw;
 }
 
-/* ✅ Barre de navigation */
+/* 🍽️ Barre de navigation */
 .navbar {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #8b4513, #a0522d);
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px 40px;
   position: relative;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  font-family: 'Playfair Display', serif;
 }
 
 /* ✅ Logo */
 .logo {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
 }
 
-/* ✅ Bouton Menu Mobile */
-.menu-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-  padding: 5px 10px;
+/* 📌 Liens de navigation */
+.nav-links {
+  display: flex;
+  gap: 20px;
 }
 
-/* ✅ Menu dropdown */
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffd700; /* 🎨 Effet doré */
+}
+
+/* 🔥 Menu Burger (Mobile) */
+.menu-btn {
+  display: none;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* 📜 Menu déroulant Mobile */
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  width: 220px;
-  border-radius: 5px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  top: 60px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  width: 200px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 10px;
 }
 
 .dropdown-menu ul {
@@ -117,52 +140,71 @@ const logout = () => {
   padding: 0;
 }
 
-.dropdown-menu ul li {
+.dropdown-menu li {
   border-bottom: 1px solid #ddd;
 }
 
-.dropdown-menu ul li a,
-.dropdown-menu ul li button {
+.dropdown-menu a,
+.dropdown-menu button {
   display: block;
-  width: 100%;
   padding: 12px;
   text-align: left;
-  text-decoration: none;
   color: #333;
-  background: white;
-  border: none;
-  cursor: pointer;
   font-size: 16px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.dropdown-menu ul li a:hover,
-.dropdown-menu ul li button:hover {
-  background: #f4f4f4;
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background: #ffcc00;
+  color: #333;
 }
 
-/* ✅ Bouton de déconnexion */
+/* 🚪 Bouton Déconnexion */
 .logout-btn {
   background-color: #ff4d4d;
   color: white;
+  font-size: 16px;
   font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
 }
 
 .logout-btn:hover {
   background-color: #cc0000;
 }
 
-/* ✅ Contenu principal */
+/* 📌 Contenu principal */
 .main-content {
   flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  padding: 40px;
+  background: #f8f9fa;
 }
 
-/* ✅ Pied de page */
+/* 🍷 Pied de page */
 .footer {
-  background-color: #1b5c9c;
+  background: linear-gradient(135deg, #8b4513, #a0522d);
   color: white;
   text-align: center;
-  padding: 10px;
+  padding: 15px;
+  font-size: 16px;
+}
+
+/* 📱 Responsivité */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .menu-btn {
+    display: block;
+  }
 }
 </style>
